@@ -31,7 +31,7 @@ type inputModel struct {
 	cursorMode cursor.Mode
 }
 
-func initialModel() inputModel {
+func initialInputModels(x, y, acceleration float32) inputModel {
 	m := inputModel{
 		inputs: make([]textinput.Model, 3),
 	}
@@ -40,21 +40,18 @@ func initialModel() inputModel {
 	for i := range m.inputs {
 		t = textinput.New()
 		t.Cursor.Style = cursorStyle
-		t.CharLimit = 32
+		t.CharLimit = 6
 
 		switch i {
 		case 0:
-			t.Placeholder = "X axis acceleration"
+			t.Placeholder = fmt.Sprintf("X axis sensibility current: %f", x)
 			t.Focus()
 			t.PromptStyle = focusedStyle
 			t.TextStyle = focusedStyle
-			t.CharLimit = 6
 		case 1:
-			t.Placeholder = "Y axis acceleration"
-			t.CharLimit = 6
+			t.Placeholder = fmt.Sprintf("Y axis sensibility current: %f", y)
 		case 2:
-			t.Placeholder = "Acceleration"
-			t.CharLimit = 6
+			t.Placeholder = fmt.Sprintf("Acceleration current: %f", acceleration)
 		}
 
 		m.inputs[i] = t

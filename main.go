@@ -97,6 +97,11 @@ func setValue(x, y, acceleration float32, deviceName string) error {
 	return err
 }
 
+func isValidFloat32(s string) (float32, bool) {
+	f, err := strconv.ParseFloat(s, 32)
+	return float32(f), err == nil
+}
+
 func main() {
 	items, err := listItems()
 
@@ -128,10 +133,58 @@ func main() {
 		return
 	}
 
-	fmt.Printf("x:%f y:%f acceleration:%f\n", x, y, acceleration)
+	inputs := initialInputModels(x, y, acceleration)
 
-	if _, err := tea.NewProgram(initialModel()).Run(); err != nil {
+	if _, err := tea.NewProgram(inputs).Run(); err != nil {
 		fmt.Printf("could not start program: %s\n", err)
 		os.Exit(1)
+	}
+
+	validationError := false
+	var f float32
+	var ok bool
+	input := inputs.inputs[0]
+	v := input.Value()
+	if v != "" {
+		f, ok = isValidFloat32(v)
+		if ok {
+			x = f
+		} else {
+			validationError = true
+			fmt.Printf("Invalid Value \"%s\" for x\n", v)
+		}
+	}
+
+	input = inputs.inputs[1]
+	v = input.Value()
+	if v != "" {
+		f, ok = isValidFloat32(v)
+		if ok {
+			y = f
+		} else {
+			validationError = true
+			fmt.Printf("Invalid Value \"%s\" for y\n", v)
+		}
+	}
+
+	input = inputs.inputs[2]
+	v = input.Value()
+	if v != "" {
+		f, ok = isValidFloat32(v)
+		if ok {
+			acceleration = f
+		} else {
+			validationError = true
+			fmt.Printf("Invalid Value \"%s\" for acceleration\n", v)
+		}
+	}
+
+	if validationError {
+		os.Exit(2)
+	}
+
+	err = setValue(x, y, acceleration, Choice)
+	if err != nil {
+		fmt.Printf("error setting new values for device: %s\n", err)
 	}
 }
