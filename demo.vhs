@@ -19,10 +19,10 @@ Sleep 400ms
 Enter
 
 Type "j"
-Sleep 100ms
+Sleep 400ms
 
 Type "j"
-Sleep 100ms
+Sleep 400ms
 
 Enter
 Sleep 300ms
