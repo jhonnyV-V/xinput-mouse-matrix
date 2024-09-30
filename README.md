@@ -21,6 +21,9 @@ go install github.com/jhonnyV-V/xinput-mouse-matrix@latest
 git clone git@github.com:jhonnyV-V/xinput-mouse-matrix && cd xinput-mouse-matrix
 ```
 ```bash
+go mod tidy
+```
+```bash
 go build -o xinput-mouse-matrix
 ```
 ```bash
