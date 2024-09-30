@@ -69,6 +69,7 @@ func (m inputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "esc":
+			Quit = true
 			return m, tea.Quit
 
 		// Change cursor mode

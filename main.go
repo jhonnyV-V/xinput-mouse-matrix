@@ -12,6 +12,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+var Quit bool
+
 func listItems() ([]list.Item, error) {
 	items := []list.Item{}
 	var buff bytes.Buffer
@@ -126,6 +128,9 @@ func main() {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
 	}
+	if Quit {
+		os.Exit(0)
+	}
 
 	x, y, acceleration, err := getCurrentValue(Choice)
 	if err != nil {
@@ -138,6 +143,9 @@ func main() {
 	if _, err := tea.NewProgram(inputs).Run(); err != nil {
 		fmt.Printf("could not start program: %s\n", err)
 		os.Exit(1)
+	}
+	if Quit {
+		os.Exit(0)
 	}
 
 	validationError := false
